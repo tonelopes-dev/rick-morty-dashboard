@@ -1,1 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+
+body {
+  min-height: 100vh;
+}
+
+.sidebar {
+  top: 56px;
+  overflow-y: auto;
+}
+
+.nav-link.active {
+  background-color: #e9ecef;
+  font-weight: bold;
+}
