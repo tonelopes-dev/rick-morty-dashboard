@@ -1,0 +1,16 @@
+<!-- header.component.html -->
+<nav class="navbar navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">Rick & Morty Dashboard</a>
+
+    <div *ngIf="isListPage()" class="d-flex">
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Search..."
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="onSearch()"
+      >
+    </div>
+  </div>
+</nav>
