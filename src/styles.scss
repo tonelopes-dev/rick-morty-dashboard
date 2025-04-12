@@ -1,11 +1,30 @@
-
 body {
   min-height: 100vh;
+  padding-top: 56px; /* Altura do header */
+  padding-left: 16.666667%; /* Largura do sidebar (col-2) */
+  overflow: hidden;
+}
+
+app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
 .sidebar {
+  position: fixed;
   top: 56px;
+  left: 0;
+  bottom: 0;
+  width: 16.666667%;
   overflow-y: auto;
+}
+
+.col-10 {
+  overflow-y: auto;
+  height: calc(100vh - 56px);
 }
 
 .nav-link.active {
