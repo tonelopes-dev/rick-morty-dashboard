@@ -5,12 +5,15 @@
 
     <div *ngIf="isListPage()" class="d-flex">
       <input
+        #inputSearch
         type="search"
         class="form-control"
         placeholder="Search..."
-        [(ngModel)]="searchTerm"
-        (keyup.enter)="onSearch()"
-      >
+        (keyup.enter)="onSearch(inputSearch.value)"
+      />
+      <button class="primary" type="button" (click)="onSearch(inputSearch.value)">
+        Search
+      </button>
     </div>
   </div>
 </nav>
