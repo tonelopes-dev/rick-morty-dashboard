@@ -38,7 +38,7 @@
               <span class="badge bg-info ms-2">{{ character.species }}</span>
             </p>
             <a
-              [routerLink]="['/detail', character.id]"
+              [routerLink]="['/character', character.id]"
               class="btn btn-primary w-100"
             >
               View Details
@@ -49,7 +49,7 @@
     </div>
 
     <div class="mt-4 text-center text-muted">
-      Total characters: {{ characters.length }}
+      Showing {{ characters.length }} of {{ characters.length }} characters
     </div>
   </div>
 </div>
