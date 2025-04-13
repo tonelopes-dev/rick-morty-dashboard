@@ -15,7 +15,7 @@
   <!-- Content -->
   <div *ngIf="!isLoading && !errorMessage">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      <div class="col" *ngFor="let episode of episodes">
+      <div class="col" *ngFor="let episode of filteredEpisodes">
         <div class="card h-100 shadow-sm">
           <div class="card-header bg-primary text-white">
             <h5 class="card-title mb-0">{{ episode.name }}</h5>
@@ -56,7 +56,7 @@
           </div>
           <div class="card-footer bg-transparent">
             <a
-              [routerLink]="['/detail', 'episode', episode.id]"
+              [routerLink]="['/episode', episode.id]"
               class="btn btn-outline-dark w-100"
             >
               View Details
@@ -67,7 +67,7 @@
     </div>
 
     <div class="mt-4 text-center text-muted">
-      Total episodes: {{ episodes.length }}
+      Showing {{ filteredEpisodes.length }} of {{ episodes.length }} episodes
     </div>
   </div>
 </div>
