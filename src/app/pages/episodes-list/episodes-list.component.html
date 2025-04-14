@@ -39,7 +39,7 @@
               </div>
               <a
                 *ngIf="episode.characters.length > 5"
-                [routerLink]="['/detail', 'episode', episode.id]"
+                [routerLink]="['/episode', episode.id]"
                 class="avatar-more text-decoration-none"
               >
                 +{{ episode.characters.length - 5 }}

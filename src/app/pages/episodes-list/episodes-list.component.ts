@@ -57,6 +57,9 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
         if (term.length > 3) {
           this.searchTerm = term;
           this.filterEpisodes(term);
+        } else if (term.length === 0) {
+          this.searchTerm = '';
+          this.resetEpisodes();
         } else {
           this.searchTerm = '';
         }
@@ -65,7 +68,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
 
   filterEpisodes(term: string) {
     this.isLoading = true;
-    this.rickMortyService.getEpisodesByName(term).subscribe({
+    this.rickMortyService.getEpisodeByName(term).subscribe({
       next: (apiResponse) => {
         this.episodes = apiResponse.results;
         this.isLoading = false;
@@ -86,7 +89,6 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
         const bottom = container.scrollTop + container.clientHeight;
         const height = container.scrollHeight;
 
-        // Verifica se chegou perto do final E não está carregando E ainda há páginas, após carregar tudo faça um return para não chamar mais o loadMoreEpisodes
         console.log(bottom, height, this.isLoading, this.totalPages, this.page);
         if (
           bottom >= height - 100 &&
@@ -131,6 +133,12 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
         name: `Character #${id}`,
       };
     });
+  }
+
+  resetEpisodes() {
+    this.page = 1;
+    this.episodes = [];
+    this.loadMoreEpisodes();
   }
 
   private extractCharacterId(url: string): number {
