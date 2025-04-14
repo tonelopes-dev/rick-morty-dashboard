@@ -57,6 +57,9 @@ export class CharactersListComponent implements OnInit, OnDestroy {
         if (term.length > 3) {
           this.searchTerm = term;
           this.filterCharacters(term);
+        } else if (term.length === 0) {
+          this.searchTerm = '';
+          this.resetCharacters();
         } else {
           this.searchTerm = '';
         }
@@ -92,6 +95,12 @@ export class CharactersListComponent implements OnInit, OnDestroy {
           this.loadMoreCharacters();
         }
       });
+  }
+
+  resetCharacters() {
+    this.page = 1;
+    this.characters = [];
+    this.loadMoreCharacters();
   }
 
   loadMoreCharacters() {
