@@ -42,4 +42,10 @@ export class RickMortyService {
   getEpisode(id: number) {
     return this.http.get<Episode>(`${this.apiUrl}/episode/${id}`);
   }
+
+  getEpisodeByName(name: string) {
+    return this.http.get<ApiResponse<Episode>>(
+      `${this.apiUrl}/episode?name=${name}`
+    );
+  }
 }
