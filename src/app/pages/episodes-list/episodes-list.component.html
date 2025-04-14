@@ -1,21 +1,13 @@
 <div class="container mt-4">
-  <!-- Loading State -->
-  <div *ngIf="isLoading" class="text-center my-5">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    <p class="mt-2">Loading episodes...</p>
-  </div>
-
   <!-- Error State -->
   <div *ngIf="errorMessage" class="alert alert-danger mt-4">
     {{ errorMessage }}
   </div>
 
   <!-- Content -->
-  <div *ngIf="!isLoading && !errorMessage">
+  <div #scrollContainer class="scroll-container">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      <div class="col" *ngFor="let episode of filteredEpisodes">
+      <div class="col" *ngFor="let episode of episodes">
         <div class="card h-100 shadow-sm">
           <div class="card-header bg-primary text-white">
             <h5 class="card-title mb-0">{{ episode.name }}</h5>
@@ -65,9 +57,14 @@
         </div>
       </div>
     </div>
-
+    <div class="text-center my-4" *ngIf="isLoading">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
     <div class="mt-4 text-center text-muted">
-      Showing {{ filteredEpisodes.length }} of {{ episodes.length }} episodes
+      Showing {{ episodes.length }} episodes. <br />Page {{ page - 1 }} of
+      {{ totalPages }}
     </div>
   </div>
 </div>

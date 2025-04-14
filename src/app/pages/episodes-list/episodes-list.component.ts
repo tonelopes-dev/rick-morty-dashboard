@@ -1,12 +1,19 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { RickMortyService } from '../../services/rick-morty.service';
 import { Episode } from '../../types/episode';
 import { CharacterAvatar } from '@app/types/character';
 import { SearchService } from '../../services/search.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { fromEvent, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-episodes-list',
@@ -20,22 +27,21 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   private searchService = inject(SearchService);
   private _unsubscribe$ = new Subject<void>();
 
+  @ViewChild('scrollContainer', { static: true }) scrollContainer!: ElementRef;
+
   episodes: Episode[] = [];
   filteredEpisodes: Episode[] = [];
-  isLoading = true;
+  isLoading = false;
   errorMessage: string | null = null;
+
+  searchTerm: string = '';
   page: number = 1;
   totalPages: number | null = null;
 
   ngOnInit() {
-    this.loadAllEpisodes();
-
-    this.searchService
-      .getSearchTerm()
-      .pipe(takeUntil(this._unsubscribe$))
-      .subscribe((term) => {
-        this.filterEpisodes(term);
-      });
+    this.loadMoreEpisodes();
+    this.listenerSearchTerm();
+    this.initScrollListener();
   }
 
   ngOnDestroy() {
@@ -43,13 +49,69 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
     this._unsubscribe$.complete();
   }
 
-  loadAllEpisodes() {
+  listenerSearchTerm() {
+    this.searchService
+      .getSearchTerm()
+      .pipe(takeUntil(this._unsubscribe$))
+      .subscribe((term) => {
+        if (term.length > 3) {
+          this.searchTerm = term;
+          this.filterEpisodes(term);
+        } else {
+          this.searchTerm = '';
+        }
+      });
+  }
+
+  filterEpisodes(term: string) {
+    this.isLoading = true;
+    this.rickMortyService.getEpisodesByName(term).subscribe({
+      next: (apiResponse) => {
+        this.episodes = apiResponse.results;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to load episodes. Please try again later.';
+        this.isLoading = false;
+        console.error('Error:', err);
+      },
+    });
+  }
+
+  initScrollListener() {
+    fromEvent(this.scrollContainer.nativeElement, 'scroll')
+      .pipe(debounceTime(50), takeUntil(this._unsubscribe$))
+      .subscribe(() => {
+        const container = this.scrollContainer.nativeElement;
+        const bottom = container.scrollTop + container.clientHeight;
+        const height = container.scrollHeight;
+
+        // Verifica se chegou perto do final E não está carregando E ainda há páginas, após carregar tudo faça um return para não chamar mais o loadMoreEpisodes
+        console.log(bottom, height, this.isLoading, this.totalPages, this.page);
+        if (
+          bottom >= height - 100 &&
+          !this.isLoading &&
+          this.totalPages !== null &&
+          this.page <= this.totalPages
+        ) {
+          this.loadMoreEpisodes();
+        }
+      });
+  }
+
+  loadMoreEpisodes() {
+    this.isLoading = true;
+
+    console.log(this.totalPages, this.page);
+    if (this.totalPages !== null && this.page > this.totalPages) return;
+
+    this.isLoading = false;
+
     this.rickMortyService.getEpisodes(this.page).subscribe({
-      next: (allEpisodes) => {
-        this.episodes = [...this.episodes, ...allEpisodes.results];
-        this.filteredEpisodes = [...this.episodes]; // já mostra todos
-        this.totalPages = allEpisodes.info.pages;
-        this.page = this.totalPages > this.page ? this.page + 1 : this.page;
+      next: (apiResponse) => {
+        this.episodes = [...this.episodes, ...apiResponse.results];
+        this.totalPages = apiResponse.info.pages;
+        this.page++;
         this.isLoading = false;
       },
       error: (err) => {
@@ -58,17 +120,6 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
         console.error(err);
       },
     });
-  }
-
-  filterEpisodes(term: string) {
-    if (!term) {
-      this.filteredEpisodes = [...this.episodes];
-      return;
-    }
-
-    this.filteredEpisodes = this.episodes.filter((episode) =>
-      episode.name.toLowerCase().includes(term.toLowerCase())
-    );
   }
 
   getCharacterAvatars(episode: Episode): CharacterAvatar[] {
