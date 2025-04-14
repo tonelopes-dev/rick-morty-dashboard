@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiResponse } from '../types/common';
 import { Character } from '../types/character';
-import { Episode } from '../types/episode';
-import { expand, EMPTY, reduce } from 'rxjs';
+import { Episode, EpisodeApiResponse } from '../types/episode';
+import { expand, EMPTY, reduce, map, Observable } from 'rxjs';
 import { environment } from 'environment';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class RickMortyService {
 
   constructor(private http: HttpClient) {}
 
-  // Métodos para Characters
+  // Characters
   getCharacters(page: number) {
     return this.http.get<ApiResponse<Character>>(
       `${this.apiUrl}/character?page=${page}`
@@ -28,16 +28,15 @@ export class RickMortyService {
   }
 
   getCharacter(id: number) {
-    return this.http.get<Character>(`${this.apiUrl}/character/${id}`) ?? {};
+    return this.http.get<Character>(`${this.apiUrl}/character/${id}`);
   }
 
-  // Métodos para Episodes
-  getEpisodes(page: number) {
-    return this.http.get<ApiResponse<Episode>>(
+  // Episodes
+  getEpisodes(page: number): Observable<EpisodeApiResponse> {
+    return this.http.get<EpisodeApiResponse>(
       `${this.apiUrl}/episode?page=${page}`
     );
   }
-
 
 
   getEpisode(id: number) {
