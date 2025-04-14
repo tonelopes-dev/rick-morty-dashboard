@@ -1,11 +1,18 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { RickMortyService } from '../../services/rick-morty.service';
 import { Character } from '../../types/character';
 import { SearchService } from '../../services/search.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, fromEvent } from 'rxjs';
+import { takeUntil, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-characters-list',
@@ -19,7 +26,11 @@ export class CharactersListComponent implements OnInit, OnDestroy {
   private searchService = inject(SearchService);
   private _unsubscribe$ = new Subject<void>();
 
+  @ViewChild('scrollContainerCharacters', { static: true })
+  scrollContainer!: ElementRef;
+
   characters: Character[] = [];
+  totalCharacters: number | null = null;
   isLoading = true;
   errorMessage: string | null = null;
 
@@ -28,9 +39,14 @@ export class CharactersListComponent implements OnInit, OnDestroy {
   totalPages: number | null = null;
 
   ngOnInit() {
-    this.loadAllCharacters();
+    this.loadMoreCharacters();
     this.listenerSearchTerm();
-    this.searchService.getSearchTerm();
+    this.initScrollListener();
+  }
+
+  ngOnDestroy() {
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete();
   }
 
   listenerSearchTerm() {
@@ -47,32 +63,12 @@ export class CharactersListComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
-    this._unsubscribe$.next();
-    this._unsubscribe$.complete();
-  }
-
-  loadAllCharacters() {
-    this.rickMortyService.getCharacters(this.page).subscribe({
-      next: (apiResponse) => {
-        this.characters = [...this.characters, ...apiResponse.results];
-        this.totalPages = apiResponse.info.pages;
-        this.page = this.totalPages > this.page ? this.page + 1 : this.page;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.errorMessage =
-          'Failed to load characters. Please try again later.';
-        this.isLoading = false;
-        console.error('Error:', err);
-      },
-    });
-  }
-
   filterCharacters(term: string) {
+    this.isLoading = true;
     this.rickMortyService.getCharactersByName(term).subscribe({
       next: (apiResponse) => {
         this.characters = apiResponse.results;
+        this.totalCharacters = apiResponse.info.count;
         this.isLoading = false;
       },
       error: (err) => {
@@ -84,8 +80,35 @@ export class CharactersListComponent implements OnInit, OnDestroy {
     });
   }
 
-  onScroll() {
-    if (this.totalPages === this.page || this.searchTerm) return;
-    this.loadAllCharacters();
+  initScrollListener() {
+    fromEvent(this.scrollContainer.nativeElement, 'scroll')
+      .pipe(debounceTime(200), takeUntil(this._unsubscribe$))
+      .subscribe(() => {
+        const container = this.scrollContainer.nativeElement;
+        const bottom = container.scrollTop + container.clientHeight;
+        const height = container.scrollHeight;
+
+        if (bottom >= height - 50) {
+          this.loadMoreCharacters();
+        }
+      });
+  }
+
+  loadMoreCharacters() {
+    this.isLoading = true;
+    this.rickMortyService.getCharacters(this.page + 1).subscribe({
+      next: (apiResponse) => {
+        this.characters = [...this.characters, ...apiResponse.results];
+        this.totalPages = apiResponse.info.pages;
+        this.page++;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.errorMessage =
+          'Failed to load characters. Please try again later.';
+        this.isLoading = false;
+        console.error('Error:', err);
+      },
+    });
   }
 }
