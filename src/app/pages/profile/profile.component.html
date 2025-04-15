@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="row">
+    <!-- Sidebar -->
+
+    <!-- Main Content -->
+    <div class="col-md-9 p-4">
+      <h4 class="text-success">User Profile</h4>
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center gap-4 mb-4">
+            <img
+              [src]="userAvatar || 'https://rickandmortyapi.com/api/character/avatar/1.jpeg'"
+              alt="User avatar"
+              class="rounded-circle"
+              style="width: 100px; height: 100px; object-fit: cover"
+            />
+            <h2 class="text-success mb-0">{{ username }}</h2>
+          </div>
+
+          <div class="card-text">
+            <p>Welcome to your profile page!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
