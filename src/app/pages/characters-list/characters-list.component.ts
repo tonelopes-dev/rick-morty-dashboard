@@ -75,13 +75,13 @@ export class CharactersListComponent implements OnInit, OnDestroy {
 
   filterCharacters(term: string) {
     this.isLoading = true;
-    this.page = 1; // Resetar para primeira página ao pesquisar
+    this.page = 1;
     this.rickMortyService.getCharactersByName(term).subscribe({
       next: (apiResponse) => {
         console.log('API Response - filter:', apiResponse);
         this.characters = apiResponse.results;
-        this.totalCharacters = apiResponse.results.length; // Usar apenas os resultados da pesquisa
-        this.totalPages = 1; // Pesquisa retorna todos de uma vez
+        this.totalCharacters = apiResponse.results.length;
+        this.totalPages = 1;
         this.errorMessage = null;
         this.isLoading = false;
       },
@@ -143,7 +143,6 @@ export class CharactersListComponent implements OnInit, OnDestroy {
         this.totalCharacters = apiResponse.info.count;
         this.totalPages = apiResponse.info.pages;
 
-        // Só incrementa se não tiver atingido o total de páginas
         if (this.page < apiResponse.info.pages) {
           this.page++;
         }
