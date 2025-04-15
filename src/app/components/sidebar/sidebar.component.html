@@ -1,8 +1,5 @@
 <!-- sidebar.component.html -->
-<div
-  class="sidebar fixed-left d-flex flex-column bg-light shadow-sm"
-  style="width: 300px; height: 93vh"
->
+<div class="sidebar d-flex flex-column bg-light shadow-sm">
   <!-- Seção do usuário no topo -->
   <div class="user-menu p-3 border-bottom profile-link">
     <a routerLink="/profile" class="text-success text-decoration-none">
@@ -26,20 +23,20 @@
   </div>
 
   <!-- Links de navegação no meio -->
-  <nav class="nav flex-column flex-grow-1 p-3">
+  <nav class="nav flex-column flex-grow-1 p-2">
     <a
       class="nav-link text-success d-flex align-items-center gap-2 py-3"
       routerLink="/characters"
       routerLinkActive="active"
     >
-    Personagens
+      Personagens
     </a>
     <a
       class="nav-link text-success d-flex align-items-center gap-2 py-3"
       routerLink="/episodes"
       routerLinkActive="active"
     >
-    Episódios
+      Episódios
     </a>
   </nav>
 
