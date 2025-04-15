@@ -19,3 +19,8 @@ export interface CharacterAvatar {
   image: string;
   name?: string; // Opcional para tooltips
 }
+
+export interface Location {
+  name: string;
+  url: string;
+}

@@ -10,7 +10,4 @@ export interface ResponseInfo {
   prev: string | null;
 }
 
-export interface Location {
-  name: string;
-  url: string;
-}
+
