@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from 'environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly AUTH_KEY = 'rick_morty_auth';
+  private readonly AUTH_KEY = environment.authKey;
 
   constructor(private router: Router) {}
 
@@ -20,7 +21,11 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  getAuthData(): { username: string; avatar: string; timestamp: number } | null {
+  getAuthData(): {
+    username: string;
+    avatar: string;
+    timestamp: number;
+  } | null {
     const authData = sessionStorage.getItem(this.AUTH_KEY);
     if (!authData) return null;
     return JSON.parse(authData);
