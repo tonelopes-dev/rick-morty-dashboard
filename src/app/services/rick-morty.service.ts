@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiResponse } from '../types/common';
 import { Character } from '../types/character';
 import { Episode, EpisodeApiResponse } from '../types/episode';
-import { expand, EMPTY, reduce, map, Observable } from 'rxjs';
+import {  Observable } from 'rxjs';
 import { environment } from 'environment';
 
 @Injectable({
