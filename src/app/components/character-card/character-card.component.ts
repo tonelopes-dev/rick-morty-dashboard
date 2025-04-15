@@ -26,7 +26,7 @@ export class CharacterCardComponent {
 
     if (this.favoritesService.isFavorite(username, this.character.id)) {
       const confirmed = confirm(
-        'Are you sure you want to remove this character from favorites?'
+        'Tem certeza de que deseja remover este personagem dos favoritos?'
       );
       if (confirmed) {
         this.favoritesService.removeFavorite(username, this.character.id);

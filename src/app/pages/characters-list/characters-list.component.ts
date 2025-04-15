@@ -78,7 +78,6 @@ export class CharactersListComponent implements OnInit, OnDestroy {
     this.page = 1;
     this.rickMortyService.getCharactersByName(term).subscribe({
       next: (apiResponse) => {
-        console.log('API Response - filter:', apiResponse);
         this.characters = apiResponse.results;
         this.totalCharacters = apiResponse.results.length;
         this.totalPages = 1;
@@ -90,10 +89,10 @@ export class CharactersListComponent implements OnInit, OnDestroy {
           this.characters = [];
           this.totalCharacters = 0;
           this.totalPages = 0;
-          this.errorMessage = `No characters found for: "${term}"`;
+          this.errorMessage = `Nenhum resultado encontrado para: "${term}"`;
         } else {
           this.errorMessage =
-            'Failed to load characters. Please try again later.';
+            'Falha ao carregar os caracteres. Tente novamente mais tarde..';
         }
         this.isLoading = false;
         console.error('Error:', err);
@@ -138,7 +137,6 @@ export class CharactersListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.rickMortyService.getCharacters(this.page).subscribe({
       next: (apiResponse) => {
-        console.log('API Response - loadMore:', apiResponse);
         this.characters = [...this.characters, ...apiResponse.results];
         this.totalCharacters = apiResponse.info.count;
         this.totalPages = apiResponse.info.pages;

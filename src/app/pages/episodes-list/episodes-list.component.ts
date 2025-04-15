@@ -85,10 +85,10 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
           this.episodes = [];
           this.totalEpisodes = 0;
           this.totalPages = 0;
-          this.errorMessage = `No episodes found for: "${term}"`;
+          this.errorMessage = `Nenhum episódio encontrado para: "${term}"`;
         } else {
           this.errorMessage =
-            'Failed to load episodes. Please try again later.';
+            'Falha ao carregar os episódios. Tente novamente mais tarde..';
         }
         this.isLoading = false;
         console.error('Error:', err);
@@ -140,7 +140,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       },
       error: (err) => {
-        this.errorMessage = 'Failed to load episodes. Please try again later.';
+        this.errorMessage = 'Falha ao carregar os episódios. Tente novamente mais tarde.';
         this.isLoading = false;
         console.error('Error:', err);
       },

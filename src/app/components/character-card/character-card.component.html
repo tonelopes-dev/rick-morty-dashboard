@@ -4,19 +4,23 @@
     <div class="d-flex justify-content-between align-items-start">
       <h5 class="card-title">{{ character.name }}</h5>
       @if (showFavorite) {
-        <app-favorite-icon
-          [isFavorite]="isFavorite()"
-          (click)="toggleFavorite()"
-        ></app-favorite-icon>
+      <app-favorite-icon
+        [isFavorite]="isFavorite()"
+        (click)="toggleFavorite()"
+      ></app-favorite-icon>
       }
     </div>
     <p class="card-text">
       <!-- Usando a abordagem com @switch -->
-      <span class="badge" [class]="{
-        'bg-success': character.status === 'Alive',
-        'bg-danger': character.status === 'Dead',
-        'bg-warning': character.status !== 'Alive' && character.status !== 'Dead'
-      }">
+      <span
+        class="badge"
+        [class]="{
+          'bg-success': character.status === 'Alive',
+          'bg-danger': character.status === 'Dead',
+          'bg-warning':
+            character.status !== 'Alive' && character.status !== 'Dead'
+        }"
+      >
         {{ character.status }}
       </span>
       <span class="badge bg-info ms-2">{{ character.species }}</span>
@@ -25,7 +29,7 @@
       [routerLink]="['/character', character.id]"
       class="btn btn-success w-100"
     >
-      View Details
+      Ver detalhes
     </a>
   </div>
 </div>

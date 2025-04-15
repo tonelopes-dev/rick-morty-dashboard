@@ -4,15 +4,13 @@
     <app-sidebar></app-sidebar>
   </div>
 
-  <!-- Error State -->
   @if (errorMessage) {
   <div class="alert alert-danger mt-4">
     {{ errorMessage }}
   </div>
   }
 
-  <!-- Content -->
-  <h4 class="text-success pb-4">Characters List</h4>
+  <h4 class="text-success pb-4">Lista de Personagens</h4>
   <div #scrollContainerCharacters class="scrollable">
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
       @for (character of characters; track character.id) {
@@ -22,11 +20,10 @@
       }
     </div>
 
-    <!-- Loading Spinner -->
     @if (isLoading) {
     <div class="text-center my-4">
       <div class="spinner-border text-success" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span class="visually-hidden">Carregando...</span>
       </div>
     </div>
     }
