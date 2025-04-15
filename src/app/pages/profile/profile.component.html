@@ -3,13 +3,16 @@
     <!-- Sidebar -->
 
     <!-- Main Content -->
-    <div class="col-md-9 p-4">
+    <div class="col-md-10 p-4">
       <h4 class="text-success">User Profile</h4>
       <div class="card">
         <div class="card-body">
           <div class="d-flex align-items-center gap-4 mb-4">
             <img
-              [src]="userAvatar || 'https://rickandmortyapi.com/api/character/avatar/1.jpeg'"
+              [src]="
+                userAvatar ||
+                'https://rickandmortyapi.com/api/character/avatar/1.jpeg'
+              "
               alt="User avatar"
               class="rounded-circle"
               style="width: 100px; height: 100px; object-fit: cover"
@@ -20,6 +23,24 @@
           <div class="card-text">
             <p>Welcome to your profile page!</p>
           </div>
+        </div>
+      </div>
+
+      <div class="mt-4 h-100">
+        <h4 class="text-success">Favorite Characters</h4>
+        <div
+          class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 character-list mt-2"
+          *ngIf="favoriteCharacters.length > 0"
+        >
+          <div class="col" *ngFor="let character of favoriteCharacters">
+            <app-character-card
+              [character]="character"
+              (favoriteRemoved)="onFavoriteRemoved($event)"
+            ></app-character-card>
+          </div>
+        </div>
+        <div *ngIf="favoriteCharacters.length === 0" class="alert alert-info">
+          You don't have any favorite characters yet.
         </div>
       </div>
     </div>
