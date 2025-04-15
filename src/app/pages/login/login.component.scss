@@ -14,7 +14,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.3);
+    background: var(--overlay-light-color);
     z-index: 1;
   }
 }
@@ -37,8 +37,8 @@
   width: 90%;
   margin: 0 auto;
   color: #fff;
-  background: rgba(0, 0, 0, 0.7);
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.25);
+  background: var(--overlay-dark-color);
+  box-shadow: 0 0 25px var(--neon-blue-shadow);
   text-align: center;
   position: relative;
   z-index: 2;
@@ -46,20 +46,20 @@
 
 .glass {
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(0, 255, 255, 0.2);
+  border: 2px solid var(--neon-blue-border);
 }
 
 .title {
   font-family: "Orbitron", sans-serif;
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
-  color: #61dafb;
+  color: var(--blue-super-soft-color);
 }
 
 .subtitle {
   font-size: 0.9rem;
   margin-bottom: 1.5rem;
-  color: #88e1f2;
+  color: var(--blue-super-soft-color);
 }
 
 .form-group {
@@ -77,8 +77,8 @@
     padding: 0.5rem;
     border-radius: 8px;
     border: none;
-    background: #1e1e2f;
-    color: #fff;
+    background: var(--blue-dark-color);
+    color: var(--light-color);
   }
 }
 
@@ -105,8 +105,8 @@
     }
 
     input[type="radio"]:checked + img {
-      border: 2px solid #00ffe1;
-      box-shadow: 0 0 8px #00ffe1;
+      border: 2px solid var(--blue-light-color);
+      box-shadow: 0 0 8px var(--blue-light-color);
     }
   }
 }
@@ -118,7 +118,12 @@
   font-weight: bold;
   border: none;
   border-radius: 8px;
-  background: linear-gradient(90deg, #00ffe1, #00d4ff);
+  background: linear-gradient(
+    90deg,
+    var(--blue-light-color),
+    var(--blue-soft-color)
+  );
+
   color: #000;
   cursor: pointer;
   transition: 0.3s;
@@ -135,6 +140,6 @@
 
 .error-message {
   margin-top: 1rem;
-  color: #ff8080;
+  color: var(--alert-color);
   font-weight: bold;
 }

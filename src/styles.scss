@@ -1,14 +1,19 @@
 @import "bootstrap/scss/bootstrap";
-
 :root {
   --primary-color: #007bff;
   --secondary-color: #6c757d;
   --success-color: #28a745;
   --danger-color: #dc3545;
+  --alert-color: #ff8080;
   --warning-color: #ffc107;
   --info-color: #17a2b8;
   --light-color: #f8f9fa;
   --dark-color: #343a40;
+
+  --blue-super-soft-color: #88e1f2;
+  --blue-light-color: #00ffe1;
+  --blue-soft-color: #00d4ff;
+  --blue-dark-color: #1e1e2f;
 
   --background-color: #f8f9fa;
   --card-bg-color: #ffffff;
@@ -17,6 +22,20 @@
   --text-color: #212529;
 
   --font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --secondary-font-family: "Orbitron", sans-serif;
+
+  --overlay-light-color: rgba(0, 0, 0, 0.3);
+  --overlay-dark-color: rgba(0, 0, 0, 0.7);
+  --neon-blue-shadow: rgba(0, 255, 255, 0.25);
+  --neon-blue-border: rgba(0, 255, 255, 0.2);
+  --border-gray-color: #dee2e6;
+  --text-gray-color: #6c757d;
+  --hover-gray-color: #e9ecef;
+  --white-color: #ffffff;
+  --avatar-overlay-color: rgba(0, 0, 0, 0.5);
+  --success-light-color: rgba(40, 167, 69, 0.1);
+  --scrollbar-track-color: #f1f1f1;
+  --success-dark-color: #218838;
 }
 
 body {
@@ -26,7 +45,6 @@ body {
   padding: 0;
   margin: 0;
 }
-
 
 app-header {
   position: fixed;
