@@ -13,11 +13,13 @@ import { Character } from '../../types/character';
 import { SearchService } from '../../services/search.service';
 import { Subject, fromEvent } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
+import { HeaderComponent } from '@app/components/header/header.component';
+import { SidebarComponent } from '@app/components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-characters-list',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, HeaderComponent, SidebarComponent],
   templateUrl: './characters-list.component.html',
   styleUrls: ['./characters-list.component.scss'],
 })
@@ -60,8 +62,6 @@ export class CharactersListComponent implements OnInit, OnDestroy {
         } else if (term.length === 0) {
           this.searchTerm = '';
           this.resetCharacters();
-        } else {
-          this.searchTerm = '';
         }
       });
   }
@@ -72,11 +72,18 @@ export class CharactersListComponent implements OnInit, OnDestroy {
       next: (apiResponse) => {
         this.characters = apiResponse.results;
         this.totalCharacters = apiResponse.info.count;
+        this.errorMessage = null;
         this.isLoading = false;
       },
       error: (err) => {
-        this.errorMessage =
-          'Failed to load characters. Please try again later.';
+        if (err.status === 404) {
+          this.characters = [];
+          this.totalCharacters = 0;
+          this.errorMessage = `No characters found for: "${term}"`;
+        } else {
+          this.errorMessage =
+            'Failed to load characters. Please try again later.';
+        }
         this.isLoading = false;
         console.error('Error:', err);
       },
@@ -100,6 +107,7 @@ export class CharactersListComponent implements OnInit, OnDestroy {
   resetCharacters() {
     this.page = 1;
     this.characters = [];
+    this.errorMessage = null;
     this.loadMoreCharacters();
   }
 

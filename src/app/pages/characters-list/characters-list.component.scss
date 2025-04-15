@@ -2,6 +2,6 @@
   height: 80vh;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: #fff;
+  background-color: var(--light-color);
   scroll-behavior: smooth;
 }
