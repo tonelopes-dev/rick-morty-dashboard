@@ -72,6 +72,8 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
           this.searchTerm = '';
           this.resetEpisodes();
           this.errorMessage = null;
+        } else {
+          this.searchTerm = '';
         }
       });
   }
@@ -122,10 +124,6 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
 
   loadMoreEpisodes() {
     this.isLoading = true;
-
-    if (this.totalPages !== null && this.page > this.totalPages) return;
-
-    this.isLoading = false;
 
     this.rickMortyService.getEpisodes(this.page).subscribe({
       next: (apiResponse) => {

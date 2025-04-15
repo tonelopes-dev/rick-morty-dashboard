@@ -60,8 +60,12 @@ export class CharactersListComponent implements OnInit, OnDestroy {
           this.searchTerm = term;
           this.filterCharacters(term);
         } else if (term.length === 0) {
+          console.log('estou aqui');
           this.searchTerm = '';
           this.resetCharacters();
+          this.errorMessage = null;
+        } else {
+          this.searchTerm = '';
         }
       });
   }
