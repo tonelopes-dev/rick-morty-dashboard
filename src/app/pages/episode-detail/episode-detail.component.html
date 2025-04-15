@@ -1,26 +1,10 @@
 <!-- episode full detail -->
 <div class="container mt-4">
+ 
   <!-- Content -->
   <div class="row">
-    <a
-      class="icon-link icon-link-hover link-success link-underline-success link-underline-opacity-25 mb-3"
-      [routerLink]="['/episodes']"
-    >
-      Back to Episodes
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="bi"
-        viewBox="0 0 16 16"
-        aria-hidden="true"
-      >
-        <path
-          d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"
-        />
-      </svg>
-    </a>
-
     <div class="col-md-8">
-      <h2>{{ episode.name }}</h2>
+      <h2><strong>Name:</strong> {{ episode.name }}</h2>
       <p><strong>Episode:</strong> {{ episode.episode }}</p>
       <p><strong>Air Date:</strong> {{ episode.air_date }}</p>
       <p><strong>Characters:</strong> {{ episode.characters.length }}</p>
@@ -30,37 +14,21 @@
   <div class="row mt-4">
     <div class="col-md-8">
       <h3>Characters</h3>
-      <div class="row">
-        <div class="col-md-4" *ngFor="let character of characters">
-          <div class="card h-100 shadow-sm">
-            <img
-              [src]="character.image"
-              class="card-img-top"
-              alt="Character Image"
-            />
-            <div class="card-body">
-              <h5 class="card-title">{{ character.name }}</h5>
-              <p class="card-text">
-                <strong>Status:</strong> {{ character.status }}
-              </p>
-              <p class="card-text">
-                <strong>Species:</strong> {{ character.species }}
-              </p>
-              <p class="card-text">
-                <strong>Type:</strong> {{ character.type }}
-              </p>
-              <p class="card-text">
-                <strong>Gender:</strong> {{ character.gender }}
-              </p>
-              <p class="card-text">
-                <strong>Origin:</strong> {{ character.origin.name }}
-              </p>
-              <p class="card-text">
-                <strong>Location:</strong> {{ character.location.name }}
-              </p>
-            </div>
-          </div>
-        </div>
+      <div class="d-flex flex-wrap gap-2">
+        <a
+          *ngFor="let character of characters"
+          [routerLink]="['/character', character.id]"
+          class="character-avatar"
+        >
+          <img
+            [src]="character.image"
+            class="rounded-circle border border-2 border-white"
+            width="60"
+            height="60"
+            [alt]="character.name"
+            [title]="character.name"
+          />
+        </a>
       </div>
     </div>
   </div>

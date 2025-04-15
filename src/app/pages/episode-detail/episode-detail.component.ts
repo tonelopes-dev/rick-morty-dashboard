@@ -5,7 +5,7 @@ import { Character, CharacterAvatar } from '@app/types/character';
 import { Episode } from '@app/types/episode';
 import { RouterModule } from '@angular/router';
 
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location  } from '@angular/common';
 
 @Component({
   selector: 'app-episode-detail',
@@ -16,11 +16,11 @@ import { CommonModule } from '@angular/common';
 })
 export class EpisodeDetailComponent {
   episode!: Episode;
-  characters: Character[] = [];
+  characters: CharacterAvatar[] = [];
 
   constructor(
     private route: ActivatedRoute,
-    private rickMortyService: RickMortyService
+    private rickMortyService: RickMortyService,
   ) {}
 
   ngOnInit() {
@@ -29,18 +29,21 @@ export class EpisodeDetailComponent {
       if (id) {
         this.rickMortyService.getEpisode(+id).subscribe((ep) => {
           this.episode = ep;
+          this.characters = this.getCharacterAvatars(ep);
         });
       }
     });
   }
 
+
+
   getCharacterAvatars(episode: Episode): CharacterAvatar[] {
-    return episode.characters.slice(0, 5).map((characterUrl) => {
+    return episode.characters.map((characterUrl) => {
       const id = this.extractCharacterId(characterUrl);
       return {
         id,
         image: `https://rickandmortyapi.com/api/character/avatar/${id}.jpeg`,
-        name: `Character #${id}`,
+        name: characterUrl,
       };
     });
   }
