@@ -1,1 +1,133 @@
-/* Estilos do componente login */
+.login-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(8px);
+    z-index: -1;
+  }
+}
+
+.bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+
+.login-card {
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 100%;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.25);
+  text-align: center;
+}
+
+.glass {
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(0, 255, 255, 0.2);
+}
+
+.title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #61dafb;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  color: #88e1f2;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+  text-align: left;
+
+  label {
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: none;
+    background: #1e1e2f;
+    color: #fff;
+  }
+}
+
+.avatar-options {
+  display: flex;
+  gap: 1rem;
+
+  .avatar {
+    cursor: pointer;
+    position: relative;
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      transition: 0.3s;
+    }
+
+    input[type="radio"]:checked + img {
+      border: 2px solid #00ffe1;
+      box-shadow: 0 0 8px #00ffe1;
+    }
+  }
+}
+
+.portal-button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #00ffe1, #00d4ff);
+  color: #000;
+  cursor: pointer;
+  transition: 0.3s;
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.error-message {
+  margin-top: 1rem;
+  color: #ff8080;
+  font-weight: bold;
+}

@@ -1,61 +1,54 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card">
-        <div class="card-header bg-primary text-white">
-          <h3 class="mb-0">Login</h3>
-        </div>
-        <div class="card-body">
-          <form (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-              <label for="username" class="form-label">Username</label>
-              <input
-                type="text"
-                class="form-control"
-                id="username"
-                [(ngModel)]="username"
-                name="username"
-                required
-                [class.is-invalid]="errorMessage"
-              />
-            </div>
+<div class="login-wrapper" style="display: absolute">
+  <video autoplay muted loop class="bg-video">
+    <source src="/rick-and-morty.mp4" type="video/mp4" />
+  </video>
 
-            <div class="mb-3">
-              <label class="form-label">Escolha seu avatar</label>
-              <div class="d-flex gap-3">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="avatar"
-                    id="avatar1"
-                    value="https://rickandmortyapi.com/api/character/avatar/1.jpeg"
-                    [(ngModel)]="selectedAvatar"
-                  >
-                  <label class="form-check-label" for="avatar1">
-                    <img src="https://rickandmortyapi.com/api/character/avatar/1.jpeg" width="50" class="rounded-circle">
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="avatar"
-                    id="avatar2"
-                    value="https://rickandmortyapi.com/api/character/avatar/4.jpeg"
-                    [(ngModel)]="selectedAvatar"
-                  >
-                  <label class="form-check-label" for="avatar2">
-                    <img src="https://rickandmortyapi.com/api/character/avatar/4.jpeg" width="50" class="rounded-circle">
-                  </label>
-                </div>
-              </div>
-            </div>
+  <div class="login-card glass">
+    <h2 class="title">PORTAL LOGIN</h2>
+    <p class="subtitle">Acesso Dimensional C-137</p>
 
-            <button type="submit" class="btn btn-primary w-100">Entrar</button>
-          </form>
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="username">Identificação Dimensional</label>
+        <input
+          id="username"
+          type="text"
+          placeholder="Seu nome"
+          [(ngModel)]="username"
+          name="username"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="avatar">Escolha seu avatar</label>
+        <div class="avatar-options">
+          <label class="avatar" *ngFor="let avatarId of [1, 2, 3, 4, 5]">
+            <input
+              type="radio"
+              name="avatar"
+              [value]="apiUrl + '/character/avatar/' + avatarId + '.jpeg'"
+              [(ngModel)]="selectedAvatar"
+            />
+            <img
+              [src]="apiUrl + '/character/avatar/' + avatarId + '.jpeg'"
+              alt="Avatar"
+            />
+          </label>
         </div>
       </div>
-    </div>
+
+      <button
+        class="portal-button"
+        type="submit"
+        [disabled]="!username || !selectedAvatar"
+      >
+        ATIVAR PORTAL
+      </button>
+
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+    </form>
   </div>
 </div>

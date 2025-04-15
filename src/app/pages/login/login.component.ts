@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { environment } from 'environment';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +12,10 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
+  apiUrl: string = environment.apiUrl;
   username: string = '';
   password: string = '';
-  selectedAvatar: string = 'https://rickandmortyapi.com/api/character/avatar/1.jpeg';
+  selectedAvatar: string = `${this.apiUrl}/character/avatar/1.jpeg`;
   errorMessage: string | null = null;
 
   constructor(private authService: AuthService) {}
@@ -21,7 +23,7 @@ export class LoginComponent {
   onSubmit(): void {
     this.errorMessage = null;
 
-    if (!this.username) {
+    if (!this.username.trim()) {
       this.errorMessage = 'Username é obrigatório';
       return;
     }
