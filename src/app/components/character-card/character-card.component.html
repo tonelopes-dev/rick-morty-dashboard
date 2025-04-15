@@ -1,0 +1,29 @@
+<div class="card h-100 shadow-sm">
+  <img [src]="character.image" class="card-img-top" [alt]="character.name">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-start">
+      <h5 class="card-title">{{ character.name }}</h5>
+      <app-favorite-icon
+        *ngIf="showFavorite"
+        [isFavorite]="isFavorite()"
+        (click)="toggleFavorite()"
+      ></app-favorite-icon>
+    </div>
+    <p class="card-text">
+      <span class="badge" [ngClass]="{
+        'bg-success': character.status === 'Alive',
+        'bg-danger': character.status === 'Dead',
+        'bg-warning': character.status === 'unknown'
+      }">
+        {{ character.status }}
+      </span>
+      <span class="badge bg-info ms-2">{{ character.species }}</span>
+    </p>
+    <a
+      [routerLink]="['/character', character.id]"
+      class="btn btn-success w-100"
+    >
+      View Details
+    </a>
+  </div>
+</div>
