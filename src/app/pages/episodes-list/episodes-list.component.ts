@@ -110,7 +110,6 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
         const bottom = container.scrollTop + container.clientHeight;
         const height = container.scrollHeight;
 
-        console.log(bottom, height, this.isLoading, this.totalPages, this.page);
         if (
           bottom >= height - 100 &&
           !this.isLoading &&

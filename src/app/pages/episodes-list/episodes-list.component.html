@@ -9,6 +9,7 @@
   </div>
 
   <!-- Content -->
+  <h4 class="text-success pb-4">Episodes List</h4>
   <div #scrollContainer class="scroll-container">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       <div class="col" *ngFor="let episode of episodes">
@@ -30,7 +31,6 @@
               <div
                 *ngFor="let avatar of getCharacterAvatars(episode)"
                 class="avatar-item"
-                [routerLink]="['/detail', 'character', avatar.id]"
               >
                 <img
                   [src]="avatar.image"
