@@ -1,27 +1,45 @@
-# RickMortyDashboard
+# Dashboard Rick e Morty
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.17.
+Este é um projeto Angular que consome a API pública de Rick e Morty para exibir informações sobre personagens e episódios da série.
 
-## Development server
+## Funcionalidades
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Listagem de personagens com paginação
+- Detalhes completos de cada personagem
+- Listagem de episódios
+- Detalhes de cada episódio com lista de personagens participantes
+- Sistema de autenticação básico
+- Barra de pesquisa para personagens e episódios
 
-## Code scaffolding
+## Tecnologias Utilizadas
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Angular 17
+- TypeScript
+- SCSS para estilização
+- API pública de Rick e Morty
 
-## Build
+## Como Executar
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+1. Clone o repositório
+2. Instale as dependências: `npm install`
+3. Inicie o servidor de desenvolvimento: `npm start`
+4. Acesse `http://localhost:4200` no navegador
 
-## Running unit tests
+## Estrutura do Projeto
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- `src/app/pages/`: Contém as páginas principais da aplicação
+  - `characters-list/`: Listagem de personagens
+  - `character-detail/`: Detalhes do personagem
+  - `episodes-list/`: Listagem de episódios
+  - `episode-detail/`: Detalhes do episódio
+  - `login/`: Página de autenticação
+  - `profile/`: Perfil do usuário
 
-## Running end-to-end tests
+- `src/app/services/`: Serviços para chamadas à API
+  - `rick-morty.service.ts`: Integração com a API de Rick e Morty
+  - `auth.service.ts`: Gerenciamento de autenticação
+  - `search.service.ts`: Funcionalidade de busca
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Contribuição
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
