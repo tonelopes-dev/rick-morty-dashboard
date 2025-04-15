@@ -3,26 +3,33 @@
   <div>
     <app-sidebar></app-sidebar>
   </div>
+
   <!-- Error State -->
-  <div *ngIf="errorMessage" class="alert alert-danger mt-4">
+  @if (errorMessage) {
+  <div class="alert alert-danger mt-4">
     {{ errorMessage }}
   </div>
+  }
 
   <!-- Content -->
   <h4 class="text-success pb-4">Characters List</h4>
   <div #scrollContainerCharacters class="scrollable">
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-      <div class="col shadow-b-sm" *ngFor="let character of characters">
+      @for (character of characters; track character.id) {
+      <div class="col shadow-b-sm">
         <app-character-card [character]="character"></app-character-card>
       </div>
+      }
     </div>
 
     <!-- Loading Spinner -->
-    <div class="text-center my-4" *ngIf="isLoading">
+    @if (isLoading) {
+    <div class="text-center my-4">
       <div class="spinner-border text-success" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
+    }
 
     <div class="mt-4 text-center text-muted">
       Showing {{ characters.length }} characters of {{ totalCharacters }}.

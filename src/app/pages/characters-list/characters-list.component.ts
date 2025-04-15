@@ -6,13 +6,12 @@ import {
   ViewChild,
   ElementRef,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { RickMortyService } from '../../services/rick-morty.service';
-import { Character } from '../../types/character';
-import { SearchService } from '../../services/search.service';
 import { Subject, fromEvent } from 'rxjs';
+import { RouterModule } from '@angular/router';
+import { Character } from '../../types/character';
 import { takeUntil, debounceTime } from 'rxjs/operators';
+import { SearchService } from '../../services/search.service';
+import { RickMortyService } from '../../services/rick-morty.service';
 import { HeaderComponent } from '@app/components/header/header.component';
 import { SidebarComponent } from '@app/components/sidebar/sidebar.component';
 import { CharacterCardComponent } from '@app/components/character-card/character-card.component';
@@ -21,11 +20,10 @@ import { CharacterCardComponent } from '@app/components/character-card/character
   selector: 'app-characters-list',
   standalone: true,
   imports: [
-    CommonModule,
     RouterModule,
     HeaderComponent,
     SidebarComponent,
-    CharacterCardComponent
+    CharacterCardComponent,
   ],
   templateUrl: './characters-list.component.html',
   styleUrls: ['./characters-list.component.scss'],
@@ -40,7 +38,7 @@ export class CharactersListComponent implements OnInit, OnDestroy {
 
   characters: Character[] = [];
   totalCharacters: number | null = null;
-  isLoading = true;
+  isLoading = false;
   errorMessage: string | null = null;
 
   searchTerm: string = '';
@@ -63,13 +61,12 @@ export class CharactersListComponent implements OnInit, OnDestroy {
       .getSearchTerm()
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((term) => {
+        this.searchTerm = term;
         if (term.length > 3) {
-          this.searchTerm = term;
+          this.errorMessage = null;
           this.filterCharacters(term);
         } else if (term.length === 0) {
-          this.searchTerm = '';
           this.resetCharacters();
-          this.errorMessage = null;
         } else {
           this.searchTerm = '';
         }
@@ -82,6 +79,7 @@ export class CharactersListComponent implements OnInit, OnDestroy {
       next: (apiResponse) => {
         this.characters = apiResponse.results;
         this.totalCharacters = apiResponse.info.count;
+        this.totalPages = apiResponse.info.pages;
         this.errorMessage = null;
         this.isLoading = false;
       },
@@ -89,6 +87,7 @@ export class CharactersListComponent implements OnInit, OnDestroy {
         if (err.status === 404) {
           this.characters = [];
           this.totalCharacters = 0;
+          this.totalPages = 0;
           this.errorMessage = `No characters found for: "${term}"`;
         } else {
           this.errorMessage =
@@ -101,8 +100,10 @@ export class CharactersListComponent implements OnInit, OnDestroy {
   }
 
   initScrollListener() {
+    if (!this.scrollContainer?.nativeElement) return;
+
     fromEvent(this.scrollContainer.nativeElement, 'scroll')
-      .pipe(debounceTime(200), takeUntil(this._unsubscribe$))
+      .pipe(debounceTime(100), takeUntil(this._unsubscribe$))
       .subscribe(() => {
         const container = this.scrollContainer.nativeElement;
         const bottom = container.scrollTop + container.clientHeight;
@@ -117,15 +118,26 @@ export class CharactersListComponent implements OnInit, OnDestroy {
   resetCharacters() {
     this.page = 1;
     this.characters = [];
+    this.totalCharacters = null;
+    this.totalPages = null;
     this.errorMessage = null;
     this.loadMoreCharacters();
   }
 
   loadMoreCharacters() {
+    if (
+      this.isLoading ||
+      this.searchTerm.length > 3 ||
+      (this.totalPages !== null && this.page > this.totalPages)
+    ) {
+      return;
+    }
+
     this.isLoading = true;
-    this.rickMortyService.getCharacters(this.page + 1).subscribe({
+    this.rickMortyService.getCharacters(this.page).subscribe({
       next: (apiResponse) => {
         this.characters = [...this.characters, ...apiResponse.results];
+        this.totalCharacters = apiResponse.info.count;
         this.totalPages = apiResponse.info.pages;
         this.page++;
         this.isLoading = false;
