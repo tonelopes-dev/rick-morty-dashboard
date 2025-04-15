@@ -41,7 +41,7 @@
 body {
   min-height: 100vh;
   overflow: hidden;
-  font-family: "Courier New", Courier, monospace;
+  font-family: var(--font-family);
   padding: 0;
   margin: 0;
 }
