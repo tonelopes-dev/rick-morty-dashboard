@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiResponse } from '../types/common';
 import { Character } from '../types/character';
 import { Episode, EpisodeApiResponse } from '../types/episode';
-import {  Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'environment';
 
 @Injectable({
@@ -38,12 +38,11 @@ export class RickMortyService {
     );
   }
 
-
   getEpisode(id: number) {
     return this.http.get<Episode>(`${this.apiUrl}/episode/${id}`);
   }
 
-  getEpisodeByName(name: string) {
+  getEpisodesByName(name: string) {
     return this.http.get<ApiResponse<Episode>>(
       `${this.apiUrl}/episode?name=${name}`
     );
