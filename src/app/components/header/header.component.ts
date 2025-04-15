@@ -19,8 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private searchService = inject(SearchService);
   private _unsubscribe$ = new Subject<void>();
 
-  searchTerm = '';
-
+  searchTerm: string = '';
   ngOnInit() {
     this.searchService
       .getSearchTerm()
