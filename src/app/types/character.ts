@@ -13,11 +13,10 @@ export interface Character {
   created: string;
 }
 
-// Adicione esta interface ao seu arquivo de tipos
 export interface CharacterAvatar {
   id: number;
   image: string;
-  name?: string; // Opcional para tooltips
+  name?: string;
 }
 
 export interface Location {
