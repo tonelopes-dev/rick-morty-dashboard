@@ -14,11 +14,20 @@ import { CharacterAvatar } from '@app/types/character';
 import { SearchService } from '../../services/search.service';
 import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { HeaderComponent } from '@app/components/header/header.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { SidebarComponent } from '@app/components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-episodes-list',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    HeaderComponent,
+    SidebarComponent,
+    NgbTooltipModule,
+  ],
   templateUrl: './episodes-list.component.html',
   styleUrls: ['./episodes-list.component.scss'],
 })
@@ -54,14 +63,15 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
       .getSearchTerm()
       .pipe(takeUntil(this._unsubscribe$))
       .subscribe((term) => {
+        this.searchTerm = term;
         if (term.length > 3) {
           this.searchTerm = term;
+          this.errorMessage = null;
           this.filterEpisodes(term);
         } else if (term.length === 0) {
           this.searchTerm = '';
           this.resetEpisodes();
-        } else {
-          this.searchTerm = '';
+          this.errorMessage = null;
         }
       });
   }
@@ -71,10 +81,19 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
     this.rickMortyService.getEpisodeByName(term).subscribe({
       next: (apiResponse) => {
         this.episodes = apiResponse.results;
+        this.totalPages = apiResponse.info.pages;
+        this.errorMessage = null;
         this.isLoading = false;
       },
       error: (err) => {
-        this.errorMessage = 'Failed to load episodes. Please try again later.';
+        if (err.status === 404) {
+          this.episodes = [];
+          this.totalPages = 0;
+          this.errorMessage = `No episodes found for: "${term}"`;
+        } else {
+          this.errorMessage =
+            'Failed to load episodes. Please try again later.';
+        }
         this.isLoading = false;
         console.error('Error:', err);
       },
@@ -130,7 +149,9 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
       return {
         id,
         image: `https://rickandmortyapi.com/api/character/avatar/${id}.jpeg`,
-        name: `Character #${id}`,
+        name: characterUrl, // Mantenha assim se não tiver o nome real
+        // Se tiver acesso aos dados completos, use:
+        // name: character.name
       };
     });
   }
@@ -138,6 +159,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   resetEpisodes() {
     this.page = 1;
     this.episodes = [];
+    this.errorMessage = null;
     this.loadMoreEpisodes();
   }
 
