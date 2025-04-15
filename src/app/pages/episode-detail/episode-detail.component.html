@@ -1,6 +1,6 @@
 <!-- episode full detail -->
 <div class="container mt-4">
- 
+
   <!-- Content -->
   <div class="row">
     <div class="col-md-8">
@@ -10,25 +10,27 @@
       <p><strong>Characters:</strong> {{ episode.characters.length }}</p>
     </div>
   </div>
+
   <!-- characters this episode -->
   <div class="row mt-4">
     <div class="col-md-8">
       <h3>Characters</h3>
       <div class="d-flex flex-wrap gap-2">
-        <a
-          *ngFor="let character of characters"
-          [routerLink]="['/character', character.id]"
-          class="character-avatar"
-        >
-          <img
-            [src]="character.image"
-            class="rounded-circle border border-2 border-white"
-            width="60"
-            height="60"
-            [alt]="character.name"
-            [title]="character.name"
-          />
-        </a>
+        @for (character of characters; track character.id) {
+          <a
+            [routerLink]="['/character', character.id]"
+            class="character-avatar"
+          >
+            <img
+              [src]="character.image"
+              class="rounded-circle border border-2 border-white"
+              width="60"
+              height="60"
+              [alt]="character.name"
+              [title]="character.name"
+            />
+          </a>
+        }
       </div>
     </div>
   </div>

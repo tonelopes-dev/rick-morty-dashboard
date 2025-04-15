@@ -1,0 +1,47 @@
+<div class="card h-100 shadow-sm">
+  <div class="card-header bg-success text-white">
+    <h5 class="card-title mb-0">{{ episode.name }}</h5>
+  </div>
+  <div class="card-body">
+    <p class="card-text">
+      <span class="badge bg-info">{{ episode.episode }}</span>
+      <span class="ms-2 text-muted">{{ episode.air_date | date }}</span>
+    </p>
+    <p class="card-text">Characters: {{ episode.characters.length }}</p>
+  </div>
+
+  <div class="mb-3 p-4">
+    <p class="small text-muted mb-2">Featured Characters:</p>
+    <div class="d-flex gap-2 avatar-group">
+      @for (avatar of getCharacterAvatars(episode); track avatar.id) {
+        <div class="avatar-item">
+          <img
+            [src]="avatar.image"
+            class="avatar-img rounded-circle"
+            [alt]="'Character ' + avatar.id"
+          />
+          <div class="avatar-overlay">
+            <i class="bi bi-person-circle"></i>
+          </div>
+        </div>
+      }
+      @if (episode.characters.length > 5) {
+        <a
+          [routerLink]="['/episode', episode.id]"
+          class="avatar-more text-decoration-none"
+        >
+          +{{ episode.characters.length - 5 }}
+        </a>
+      }
+    </div>
+  </div>
+
+  <div class="card-footer bg-transparent">
+    <a
+      [routerLink]="['/episode', episode.id]"
+      class="btn btn-outline-success w-100"
+    >
+      View Details
+    </a>
+  </div>
+</div>

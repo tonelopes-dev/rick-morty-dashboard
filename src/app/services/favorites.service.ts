@@ -8,27 +8,30 @@ import { environment } from 'environment';
 export class FavoritesService {
   private readonly STORAGE_KEY = environment.storageKey;
 
-  getFavorites(): Character[] {
-    const favorites = localStorage.getItem(this.STORAGE_KEY);
+  getFavorites(username: string): Character[] {
+    const key = `${this.STORAGE_KEY}_${username}`;
+    const favorites = localStorage.getItem(key);
     return favorites ? JSON.parse(favorites) : [];
   }
 
-  addFavorite(character: Character): void {
-    const favorites = this.getFavorites();
+  addFavorite(username: string, character: Character): void {
+    const favorites = this.getFavorites(username);
     if (!favorites.some((fav) => fav.id === character.id)) {
       favorites.push(character);
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(favorites));
+      const key = `${this.STORAGE_KEY}_${username}`;
+      localStorage.setItem(key, JSON.stringify(favorites));
     }
   }
 
-  removeFavorite(characterId: number): void {
-    const favorites = this.getFavorites().filter(
+  removeFavorite(username: string, characterId: number): void {
+    const favorites = this.getFavorites(username).filter(
       (fav) => fav.id !== characterId
     );
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(favorites));
+    const key = `${this.STORAGE_KEY}_${username}`;
+    localStorage.setItem(key, JSON.stringify(favorites));
   }
 
-  isFavorite(characterId: number): boolean {
-    return this.getFavorites().some((fav) => fav.id === characterId);
+  isFavorite(username: string, characterId: number): boolean {
+    return this.getFavorites(username).some((fav) => fav.id === characterId);
   }
 }
