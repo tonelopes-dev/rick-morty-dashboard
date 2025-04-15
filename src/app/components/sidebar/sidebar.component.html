@@ -1,14 +1,63 @@
 <!-- sidebar.component.html -->
 <div
-  class="sidebar fixed-left pt-4 bg-light"
-  style="width: 250px; height: 100vh"
+  class="sidebar fixed-left d-flex flex-column bg-light shadow-sm"
+  style="width: 300px; height: 93vh"
 >
-  <nav class="nav flex-column fixed-left">
-    <a class="nav-link" routerLink="/characters" routerLinkActive="active"
-      >Characters</a
+  <!-- Seção do usuário no topo -->
+  <div class="user-menu p-3 border-bottom profile-link">
+    <a routerLink="/profile" class="text-success text-decoration-none">
+      <div class="d-flex align-items-center">
+        <img
+          [src]="
+            avatar || 'https://rickandmortyapi.com/api/character/avatar/1.jpeg'
+          "
+          alt="User avatar"
+          class="rounded-circle me-2"
+          style="width: 60px; height: 60px; object-fit: cover"
+        />
+        <div class="d-flex flex-column">
+          <span class="fw-medium mb-1">{{ username }}</span>
+          <div class="d-flex align-items-center gap-1">
+            <span class="text-muted small">View Profile</span>
+            <svg width="12" height="12" fill="currentColor" class="mt-1">
+              <use
+                xlink:href="/icons/bootstrap-icons.svg#arrow-up-right-square"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Links de navegação no meio -->
+  <nav class="nav flex-column flex-grow-1 p-3">
+    <a
+      class="nav-link text-success d-flex align-items-center gap-2 py-3"
+      routerLink="/characters"
+      routerLinkActive="active"
     >
-    <a class="nav-link" routerLink="/episodes" routerLinkActive="active"
-      >Episodes</a
+      Characters
+    </a>
+    <a
+      class="nav-link text-success d-flex align-items-center gap-2 py-3"
+      routerLink="/episodes"
+      routerLinkActive="active"
     >
+      Episodes
+    </a>
   </nav>
+
+  <!-- Botão de logout fixo na base -->
+  <div class="border-top p-3 mt-auto">
+    <button
+      class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2"
+      (click)="logout()"
+    >
+      <svg width="16" height="16" fill="currentColor">
+        <use xlink:href="/icons/bootstrap-icons.svg#box-arrow-right" />
+      </svg>
+      Logout
+    </button>
+  </div>
 </div>
