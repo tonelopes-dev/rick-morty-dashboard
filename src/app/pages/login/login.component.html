@@ -1,6 +1,6 @@
-<div class="login-wrapper" style="display: absolute">
-  <video autoplay muted loop class="bg-video">
-    <source src="/rick-and-morty.mp4" type="video/mp4" />
+<div class="login-wrapper">
+  <video #bgVideo autoplay muted loop class="bg-video" style="width: 100%; height: 100%; object-fit: cover">
+    <source src="rick-and-morty.mp4" type="video/mp4" />
   </video>
 
   <div class="login-card glass">
@@ -23,18 +23,20 @@
       <div class="form-group">
         <label for="avatar">Escolha seu avatar</label>
         <div class="avatar-options">
-          <label class="avatar" *ngFor="let avatarId of [1, 2, 3, 4, 5]">
-            <input
-              type="radio"
-              name="avatar"
-              [value]="apiUrl + '/character/avatar/' + avatarId + '.jpeg'"
-              [(ngModel)]="selectedAvatar"
-            />
-            <img
-              [src]="apiUrl + '/character/avatar/' + avatarId + '.jpeg'"
-              alt="Avatar"
-            />
-          </label>
+          @for (avatarId of [1, 2, 3, 4, 5]; track avatarId) {
+            <label class="avatar">
+              <input
+                type="radio"
+                name="avatar"
+                [value]="apiUrl + '/character/avatar/' + avatarId + '.jpeg'"
+                [(ngModel)]="selectedAvatar"
+              />
+              <img
+                [src]="apiUrl + '/character/avatar/' + avatarId + '.jpeg'"
+                alt="Avatar"
+              />
+            </label>
+          }
         </div>
       </div>
 
@@ -46,9 +48,11 @@
         ATIVAR PORTAL
       </button>
 
-      <div *ngIf="errorMessage" class="error-message">
-        {{ errorMessage }}
-      </div>
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
     </form>
   </div>
 </div>

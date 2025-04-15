@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -11,7 +11,19 @@ import { environment } from 'environment';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements AfterViewInit {
+  @ViewChild('bgVideo') bgVideo!: ElementRef<HTMLVideoElement>;
+
+  ngAfterViewInit() {
+    const video = this.bgVideo.nativeElement;
+    const playPromise = video.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch((error: Error) => {
+        document.addEventListener('click', () => video.play(), { once: true });
+      });
+    }
+  }
   apiUrl: string = environment.apiUrl;
   username: string = '';
   password: string = '';

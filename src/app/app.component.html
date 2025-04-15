@@ -1,8 +1,12 @@
-<app-header *ngIf="!isLoginRoute()"></app-header>
-<div class="main-container" *ngIf="!isLoginRoute()">
-  <app-sidebar></app-sidebar>
-  <main class="content">
-    <router-outlet></router-outlet>
-  </main>
-</div>
-<router-outlet *ngIf="isLoginRoute()"></router-outlet>
+@if (!isLoginRoute()) {
+  <app-header></app-header>
+  <div class="main-container">
+    <app-sidebar></app-sidebar>
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+}
+@if (isLoginRoute()) {
+  <router-outlet></router-outlet>
+}
