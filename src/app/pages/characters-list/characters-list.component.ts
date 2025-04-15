@@ -75,11 +75,13 @@ export class CharactersListComponent implements OnInit, OnDestroy {
 
   filterCharacters(term: string) {
     this.isLoading = true;
+    this.page = 1; // Resetar para primeira página ao pesquisar
     this.rickMortyService.getCharactersByName(term).subscribe({
       next: (apiResponse) => {
+        console.log('API Response - filter:', apiResponse);
         this.characters = apiResponse.results;
-        this.totalCharacters = apiResponse.info.count;
-        this.totalPages = apiResponse.info.pages;
+        this.totalCharacters = apiResponse.results.length; // Usar apenas os resultados da pesquisa
+        this.totalPages = 1; // Pesquisa retorna todos de uma vez
         this.errorMessage = null;
         this.isLoading = false;
       },
@@ -128,7 +130,7 @@ export class CharactersListComponent implements OnInit, OnDestroy {
     if (
       this.isLoading ||
       this.searchTerm.length > 3 ||
-      (this.totalPages !== null && this.page > this.totalPages)
+      (this.totalPages !== null && this.page >= this.totalPages)
     ) {
       return;
     }
@@ -136,10 +138,16 @@ export class CharactersListComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.rickMortyService.getCharacters(this.page).subscribe({
       next: (apiResponse) => {
+        console.log('API Response - loadMore:', apiResponse);
         this.characters = [...this.characters, ...apiResponse.results];
         this.totalCharacters = apiResponse.info.count;
         this.totalPages = apiResponse.info.pages;
-        this.page++;
+
+        // Só incrementa se não tiver atingido o total de páginas
+        if (this.page < apiResponse.info.pages) {
+          this.page++;
+        }
+
         this.isLoading = false;
       },
       error: (err) => {

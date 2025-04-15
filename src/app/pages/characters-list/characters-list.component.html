@@ -33,7 +33,7 @@
 
     <div class="mt-4 text-center text-muted">
       Showing {{ characters.length }} characters of {{ totalCharacters }}.
-      <br />Page {{ page - 1 }} of {{ totalPages }}
+      <br />Page {{ searchTerm.length > 3 ? page : page - 1 }} of {{ totalPages }}
     </div>
   </div>
 </div>
