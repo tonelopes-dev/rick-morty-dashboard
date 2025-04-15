@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RickMortyService } from '@app/services/rick-morty.service';
 import { Character } from '@app/types/character';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-character-detail',
@@ -15,7 +16,8 @@ export class CharacterDetailComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private rickMortyService: RickMortyService
+    private rickMortyService: RickMortyService,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -27,5 +29,8 @@ export class CharacterDetailComponent {
         });
       }
     });
+  }
+  goBack() {
+    this.location.back();
   }
 }

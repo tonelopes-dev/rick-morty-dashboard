@@ -1,7 +1,14 @@
 <!--  character details -->
 <div class="container mt-4">
+  <!-- goBack -->
+  <div class="row">
+    <div class="col-md-8">
+      <button type="button" class="btn btn-success mb-4" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i> Go Back
+      </button>
+    </div>
+  </div>
   <!-- Content -->
-
   <div class="row">
     <div class="col-md-4">
       <img [src]="character.image" class="img-fluid" alt="Character Image" />
