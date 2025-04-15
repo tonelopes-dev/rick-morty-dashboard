@@ -1,19 +1,21 @@
 <div class="card h-100 shadow-sm">
-  <img [src]="character.image" class="card-img-top" [alt]="character.name">
+  <img [src]="character.image" class="card-img-top" [alt]="character.name" />
   <div class="card-body">
     <div class="d-flex justify-content-between align-items-start">
       <h5 class="card-title">{{ character.name }}</h5>
-      <app-favorite-icon
-        *ngIf="showFavorite"
-        [isFavorite]="isFavorite()"
-        (click)="toggleFavorite()"
-      ></app-favorite-icon>
+      @if (showFavorite) {
+        <app-favorite-icon
+          [isFavorite]="isFavorite()"
+          (click)="toggleFavorite()"
+        ></app-favorite-icon>
+      }
     </div>
     <p class="card-text">
-      <span class="badge" [ngClass]="{
+      <!-- Usando a abordagem com @switch -->
+      <span class="badge" [class]="{
         'bg-success': character.status === 'Alive',
         'bg-danger': character.status === 'Dead',
-        'bg-warning': character.status === 'unknown'
+        'bg-warning': character.status !== 'Alive' && character.status !== 'Dead'
       }">
         {{ character.status }}
       </span>
