@@ -2,6 +2,8 @@
 
 Este é um projeto Angular que consome a API pública de Rick e Morty para exibir informações sobre personagens e episódios da série.
 
+![App Screenshot](/public/rick-morty-breaking-bad.webp)
+
 ## Funcionalidades
 
 - Listagem de personagens com paginação
@@ -28,6 +30,7 @@ Este é um projeto Angular que consome a API pública de Rick e Morty para exibi
 ## Estrutura do Projeto
 
 - `src/app/pages/`: Contém as páginas principais da aplicação
+
   - `characters-list/`: Listagem de personagens
   - `character-detail/`: Detalhes do personagem
   - `episodes-list/`: Listagem de episódios
