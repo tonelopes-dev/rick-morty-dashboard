@@ -26,10 +26,15 @@ export class ProfileComponent {
   }
 
   private loadFavorites(): void {
-    this.favoriteCharacters = this.favoritesService.getFavorites();
+    if (this.username) {
+      this.favoriteCharacters = this.favoritesService.getFavorites(this.username);
+    }
   }
 
   onFavoriteRemoved(characterId: number): void {
-    this.loadFavorites();
+    if (this.username) {
+      this.favoritesService.removeFavorite(this.username, characterId);
+      this.loadFavorites();
+    }
   }
 }

@@ -21,27 +21,32 @@
           </div>
 
           <div class="card-text">
-            <p>Welcome to your profile page!</p>
+            <p>Bem-vindo à sua página de perfil!</p>
           </div>
         </div>
       </div>
 
       <div class="mt-4 h-100">
         <h4 class="text-success">Favorite Characters</h4>
+
+        @if (favoriteCharacters.length > 0) {
         <div
           class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 character-list mt-2"
-          *ngIf="favoriteCharacters.length > 0"
         >
-          <div class="col" *ngFor="let character of favoriteCharacters">
+          @for (character of favoriteCharacters; track character.id) {
+          <div class="col">
             <app-character-card
               [character]="character"
               (favoriteRemoved)="onFavoriteRemoved($event)"
             ></app-character-card>
           </div>
+          }
         </div>
-        <div *ngIf="favoriteCharacters.length === 0" class="alert alert-info">
-          You don't have any favorite characters yet.
+        } @else {
+        <div class="alert alert-info">
+          Você ainda não tem nenhum personagem favorito.
         </div>
+        }
       </div>
     </div>
   </div>
