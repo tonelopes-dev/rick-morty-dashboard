@@ -1,11 +1,8 @@
-<div class="container-fluid">
-  <app-header></app-header>
-  <div class="row" style="margin-top: 56px">
-    <div class="">
-      <app-sidebar></app-sidebar>
-    </div>
-    <div class="col-10 p-4 shadow-sm">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+<app-header *ngIf="!isLoginRoute()"></app-header>
+<div class="main-container" *ngIf="!isLoginRoute()">
+  <app-sidebar></app-sidebar>
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
 </div>
+<router-outlet *ngIf="isLoginRoute()"></router-outlet>
