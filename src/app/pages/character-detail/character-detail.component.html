@@ -1,0 +1,19 @@
+<!--  character details -->
+<div class="container mt-4">
+  <!-- Content -->
+
+  <div class="row">
+    <div class="col-md-4">
+      <img [src]="character.image" class="img-fluid" alt="Character Image" />
+    </div>
+    <div class="col-md-8">
+      <h2>{{ character.name }}</h2>
+      <p><strong>Status:</strong> {{ character.status }}</p>
+      <p><strong>Species:</strong> {{ character.species }}</p>
+      <p><strong>Type:</strong> {{ character.type }}</p>
+      <p><strong>Gender:</strong> {{ character.gender }}</p>
+      <p><strong>Origin:</strong> {{ character.origin.name }}</p>
+      <p><strong>Location:</strong> {{ character.location.name }}</p>
+    </div>
+  </div>
+</div>
