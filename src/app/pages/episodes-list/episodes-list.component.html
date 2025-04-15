@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <app-header></app-header>
-  <div class="">
+  <div>
     <app-sidebar></app-sidebar>
   </div>
   <!-- Error State -->
@@ -24,17 +24,16 @@
             <p class="card-text">Characters: {{ episode.characters.length }}</p>
           </div>
           <!-- Dentro do card-body, adicione: -->
-          <div class="mb-3">
+          <div class="mb-3 p-4">
             <p class="small text-muted mb-2">Featured Characters:</p>
             <div class="d-flex gap-2 avatar-group">
               <div
                 *ngFor="let avatar of getCharacterAvatars(episode)"
                 class="avatar-item"
-                [routerLink]="['/character', avatar.id]"
+                [routerLink]="['/detail', 'character', avatar.id]"
               >
                 <img
                   [src]="avatar.image"
-                  [ngbTooltip]="avatar.name"
                   class="avatar-img rounded-circle"
                   [alt]="'Character ' + avatar.id"
                 />
@@ -42,6 +41,13 @@
                   <i class="bi bi-person-circle"></i>
                 </div>
               </div>
+              <a
+                *ngIf="episode.characters.length > 5"
+                [routerLink]="['/episode', episode.id]"
+                class="avatar-more text-decoration-none"
+              >
+                +{{ episode.characters.length - 5 }}
+              </a>
             </div>
           </div>
           <div class="card-footer bg-transparent">

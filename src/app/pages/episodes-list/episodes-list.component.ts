@@ -123,7 +123,6 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   loadMoreEpisodes() {
     this.isLoading = true;
 
-    console.log(this.totalPages, this.page);
     if (this.totalPages !== null && this.page > this.totalPages) return;
 
     this.isLoading = false;
@@ -149,9 +148,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
       return {
         id,
         image: `https://rickandmortyapi.com/api/character/avatar/${id}.jpeg`,
-        name: characterUrl, // Mantenha assim se não tiver o nome real
-        // Se tiver acesso aos dados completos, use:
-        // name: character.name
+        name: `Character ${id}`,
       };
     });
   }
