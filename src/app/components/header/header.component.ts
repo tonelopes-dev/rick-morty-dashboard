@@ -1,8 +1,6 @@
-// header.component.ts
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { SearchService } from '../../services/search.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -10,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [RouterModule, FormsModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -41,7 +39,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
   }
 
-  // se for vazio chama a primeira página
   onSearch(inputValue: string) {
     this.searchService.setSearchTerm(inputValue);
   }
