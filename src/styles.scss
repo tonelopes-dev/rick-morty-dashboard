@@ -1,9 +1,32 @@
+@import "bootstrap/scss/bootstrap";
+
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #6c757d;
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+  --light-color: #f8f9fa;
+  --dark-color: #343a40;
+
+  --background-color: #f8f9fa;
+  --card-bg-color: #ffffff;
+  --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --border-color: #dee2e6;
+  --text-color: #212529;
+
+  --font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
 body {
   min-height: 100vh;
-  padding-top: 56px; /* Altura do header */
-  padding-left: 16.666667%; /* Largura do sidebar (col-2) */
   overflow: hidden;
+  font-family: "Courier New", Courier, monospace;
+  padding: 0;
+  margin: 0;
 }
+
 
 app-header {
   position: fixed;
@@ -18,16 +41,11 @@ app-header {
   top: 56px;
   left: 0;
   bottom: 0;
-  width: 16.666667%;
+  width: 16%;
   overflow-y: auto;
 }
 
 .col-10 {
   overflow-y: auto;
   height: calc(100vh - 56px);
-}
-
-.nav-link.active {
-  background-color: #e9ecef;
-  font-weight: bold;
 }
