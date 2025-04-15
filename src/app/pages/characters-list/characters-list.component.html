@@ -9,38 +9,11 @@
   </div>
 
   <!-- Content -->
+  <h4 class="text-success pb-4">Characters List</h4>
   <div #scrollContainerCharacters class="scrollable">
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
       <div class="col shadow-b-sm" *ngFor="let character of characters">
-        <div class="card h-100 shadow-sm">
-          <img
-            [src]="character.image"
-            class="card-img-top"
-            [alt]="character.name"
-          />
-          <div class="card-body">
-            <h5 class="card-title">{{ character.name }}</h5>
-            <p class="card-text">
-              <span
-                class="badge"
-                [ngClass]="{
-                  'bg-success': character.status === 'Alive',
-                  'bg-danger': character.status === 'Dead',
-                  'bg-warning': character.status === 'unknown'
-                }"
-              >
-                {{ character.status }}
-              </span>
-              <span class="badge bg-info ms-2">{{ character.species }}</span>
-            </p>
-            <a
-              [routerLink]="['/character', character.id]"
-              class="btn btn-success w-100"
-            >
-              View Details
-            </a>
-          </div>
-        </div>
+        <app-character-card [character]="character"></app-character-card>
       </div>
     </div>
 

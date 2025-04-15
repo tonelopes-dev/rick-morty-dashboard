@@ -15,11 +15,18 @@ import { Subject, fromEvent } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { HeaderComponent } from '@app/components/header/header.component';
 import { SidebarComponent } from '@app/components/sidebar/sidebar.component';
+import { CharacterCardComponent } from '@app/components/character-card/character-card.component';
 
 @Component({
   selector: 'app-characters-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, HeaderComponent, SidebarComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    HeaderComponent,
+    SidebarComponent,
+    CharacterCardComponent
+  ],
   templateUrl: './characters-list.component.html',
   styleUrls: ['./characters-list.component.scss'],
 })
@@ -60,7 +67,6 @@ export class CharactersListComponent implements OnInit, OnDestroy {
           this.searchTerm = term;
           this.filterCharacters(term);
         } else if (term.length === 0) {
-          console.log('estou aqui');
           this.searchTerm = '';
           this.resetCharacters();
           this.errorMessage = null;

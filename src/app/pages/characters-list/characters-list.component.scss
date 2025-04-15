@@ -4,4 +4,23 @@
   overflow-x: hidden;
   background-color: var(--light-color);
   scroll-behavior: smooth;
+  padding-right: 24px;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #28a745;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #218838;
+  }
 }
