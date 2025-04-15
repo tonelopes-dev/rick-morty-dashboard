@@ -3,31 +3,25 @@ import {
   inject,
   OnInit,
   OnDestroy,
-  ElementRef,
   ViewChild,
+  ElementRef,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Subject, fromEvent } from 'rxjs';
 import { RouterModule } from '@angular/router';
-import { RickMortyService } from '../../services/rick-morty.service';
 import { Episode } from '../../types/episode';
-import { CharacterAvatar } from '@app/types/character';
+import { takeUntil, debounceTime } from 'rxjs/operators';
 import { SearchService } from '../../services/search.service';
-import { fromEvent, Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { RickMortyService } from '../../services/rick-morty.service';
 import { HeaderComponent } from '@app/components/header/header.component';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { SidebarComponent } from '@app/components/sidebar/sidebar.component';
+import { CommonModule } from '@angular/common';
+import { EpisodeCardComponent } from '@app/components/episode-card/episode-card.component';
+import { environment } from 'environment';
 
 @Component({
   selector: 'app-episodes-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    HeaderComponent,
-    SidebarComponent,
-    NgbTooltipModule,
-  ],
+  imports: [RouterModule, HeaderComponent, SidebarComponent, CommonModule, EpisodeCardComponent],
   templateUrl: './episodes-list.component.html',
   styleUrls: ['./episodes-list.component.scss'],
 })
@@ -36,10 +30,11 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   private searchService = inject(SearchService);
   private _unsubscribe$ = new Subject<void>();
 
-  @ViewChild('scrollContainer', { static: true }) scrollContainer!: ElementRef;
+  @ViewChild('scrollContainer', { static: true })
+  scrollContainer!: ElementRef;
 
   episodes: Episode[] = [];
-  filteredEpisodes: Episode[] = [];
+  totalEpisodes: number | null = null;
   isLoading = false;
   errorMessage: string | null = null;
 
@@ -65,13 +60,10 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
       .subscribe((term) => {
         this.searchTerm = term;
         if (term.length > 3) {
-          this.searchTerm = term;
           this.errorMessage = null;
           this.filterEpisodes(term);
         } else if (term.length === 0) {
-          this.searchTerm = '';
           this.resetEpisodes();
-          this.errorMessage = null;
         } else {
           this.searchTerm = '';
         }
@@ -80,9 +72,10 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
 
   filterEpisodes(term: string) {
     this.isLoading = true;
-    this.rickMortyService.getEpisodeByName(term).subscribe({
+    this.rickMortyService.getEpisodesByName(term).subscribe({
       next: (apiResponse) => {
         this.episodes = apiResponse.results;
+        this.totalEpisodes = apiResponse.info.count;
         this.totalPages = apiResponse.info.pages;
         this.errorMessage = null;
         this.isLoading = false;
@@ -90,6 +83,7 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
       error: (err) => {
         if (err.status === 404) {
           this.episodes = [];
+          this.totalEpisodes = 0;
           this.totalPages = 0;
           this.errorMessage = `No episodes found for: "${term}"`;
         } else {
@@ -103,62 +97,53 @@ export class EpisodesListComponent implements OnInit, OnDestroy {
   }
 
   initScrollListener() {
+    if (!this.scrollContainer?.nativeElement) return;
+
     fromEvent(this.scrollContainer.nativeElement, 'scroll')
-      .pipe(debounceTime(50), takeUntil(this._unsubscribe$))
+      .pipe(debounceTime(100), takeUntil(this._unsubscribe$))
       .subscribe(() => {
         const container = this.scrollContainer.nativeElement;
         const bottom = container.scrollTop + container.clientHeight;
         const height = container.scrollHeight;
 
-        if (
-          bottom >= height - 100 &&
-          !this.isLoading &&
-          this.totalPages !== null &&
-          this.page <= this.totalPages
-        ) {
+        if (bottom >= height - 50) {
           this.loadMoreEpisodes();
         }
       });
   }
 
-  loadMoreEpisodes() {
-    this.isLoading = true;
+  resetEpisodes() {
+    this.page = 1;
+    this.episodes = [];
+    this.totalEpisodes = null;
+    this.totalPages = null;
+    this.errorMessage = null;
+    this.loadMoreEpisodes();
+  }
 
+  loadMoreEpisodes() {
+    if (
+      this.isLoading ||
+      this.searchTerm.length > 3 ||
+      (this.totalPages !== null && this.page > this.totalPages)
+    ) {
+      return;
+    }
+
+    this.isLoading = true;
     this.rickMortyService.getEpisodes(this.page).subscribe({
       next: (apiResponse) => {
         this.episodes = [...this.episodes, ...apiResponse.results];
+        this.totalEpisodes = apiResponse.info.count;
         this.totalPages = apiResponse.info.pages;
         this.page++;
         this.isLoading = false;
       },
       error: (err) => {
-        this.errorMessage = 'Failed to load episodes';
+        this.errorMessage = 'Failed to load episodes. Please try again later.';
         this.isLoading = false;
-        console.error(err);
+        console.error('Error:', err);
       },
     });
-  }
-
-  getCharacterAvatars(episode: Episode): CharacterAvatar[] {
-    return episode.characters.slice(0, 5).map((characterUrl) => {
-      const id = this.extractCharacterId(characterUrl);
-      return {
-        id,
-        image: `https://rickandmortyapi.com/api/character/avatar/${id}.jpeg`,
-        name: `Character ${id}`,
-      };
-    });
-  }
-
-  resetEpisodes() {
-    this.page = 1;
-    this.episodes = [];
-    this.errorMessage = null;
-    this.loadMoreEpisodes();
-  }
-
-  private extractCharacterId(url: string): number {
-    const matches = url.match(/\/(\d+)$/);
-    return matches ? parseInt(matches[1], 10) : 0;
   }
 }
