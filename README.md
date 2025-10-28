@@ -2,7 +2,7 @@
 
 Este é um projeto Angular que consome a API pública de Rick e Morty para exibir informações sobre personagens e episódios da série.
 
-![App Screenshot](/public/rick-morty-breaking-bad.webp)
+![App Screenshot](https://tone-monte-portfolio-v3.s3.us-east-1.amazonaws.com/projects/1758298654169-q7yfn2-banner-rick-and-morty.webp)
 
 ## Funcionalidades
 
